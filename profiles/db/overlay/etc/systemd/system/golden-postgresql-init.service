@@ -1,0 +1,15 @@
+[Unit]
+Description=Crea il cluster PostgreSQL al primo avvio (articolo 6)
+ConditionPathExists=!/var/lib/postgresql/17/main
+RequiresMountsFor=/var/lib/postgresql
+# L'istanza postgresql@17-main è abilitata nell'immagine e ordinata dopo questa unit:
+# il generator di Debian gira prima che il cluster (e, nell'immutabile, /var) esista
+Before=postgresql@17-main.service postgresql.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/libexec/golden/postgresql-init
+
+[Install]
+WantedBy=multi-user.target

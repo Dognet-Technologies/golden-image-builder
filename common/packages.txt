@@ -1,0 +1,16 @@
+systemd-sysv      # init
+udev              # gestione dispositivi
+libpam-systemd    # sessioni utente sotto systemd
+apt               # gestione dei pacchetti sull'immagine
+debian-archive-keyring  # chiavi del repository, citate da Signed-By
+ca-certificates   # fiducia TLS per aggiornamenti
+iproute2          # configurazione di rete
+nftables          # firewall
+openssh-server    # accesso amministrativo
+apparmor          # strumenti e profili AppArmor (l'enforcement si verifica: articolo 4)
+linux-image-amd64 # kernel (articolo 2)
+dracut            # initrd basato su systemd: serve per dm-verity e A/B (articoli 2 e 5)
+systemd-boot-efi  # binari EFI di systemd-boot e dello stub UKI, presi dallo snapshot
+systemd-resolved  # resolver DNS locale (stub su 127.0.0.53)
+systemd-timesyncd # sincronizzazione dell'ora: log, TLS e audit ne dipendono
+auditd            # registro di audit del kernel (articolo 4)

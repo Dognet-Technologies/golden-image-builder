@@ -1,0 +1,9 @@
+# Tutte le interfacce ethernet fisiche (o virtio) in DHCP, IPv4 e IPv6
+[Match]
+Kind=!*
+Type=ether
+
+[Network]
+DHCP=yes
+LLMNR=no
+MulticastDNS=no

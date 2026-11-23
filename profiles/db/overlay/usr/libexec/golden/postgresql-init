@@ -1,0 +1,6 @@
+#!/bin/sh
+# Primo avvio del profilo db: crea il cluster (system identifier unico per macchina)
+set -eu
+pg_createcluster 17 main
+install -o postgres -g postgres -m 0640 /usr/share/golden/postgresql/pg_hba.conf /etc/postgresql/17/main/pg_hba.conf
+install -o postgres -g postgres -m 0640 /usr/share/golden/postgresql/50-golden.conf /etc/postgresql/17/main/conf.d/50-golden.conf

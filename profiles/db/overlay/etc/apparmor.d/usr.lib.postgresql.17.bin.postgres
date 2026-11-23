@@ -1,0 +1,47 @@
+# Profilo AppArmor di PostgreSQL 17 (articolo 6). Scritto in complain mode, raffinato
+# sui record "ALLOWED" del registro di audit durante un carico reale, poi in enforce.
+abi <abi/4.0>,
+include <tunables/global>
+
+# attach_disconnected: con il sandboxing di systemd (PrivateTmp, PrivateDevices) la
+# memoria condivisa in /dev/shm sta in un altro mount namespace e il percorso non si
+# risolve ("Failed name lookup - disconnected path")
+profile postgresql /usr/lib/postgresql/17/bin/postgres flags=(attach_disconnected) {
+  include <abstractions/base>
+  include <abstractions/nameservice>
+  include <abstractions/openssl>
+
+  network inet stream,
+  network inet6 stream,
+  network unix stream,
+  network unix dgram,
+
+  signal (send, receive) peer=postgresql,
+  signal (receive) peer=unconfined,
+
+  /usr/lib/postgresql/17/bin/postgres mrix,
+  # initdb (creazione del cluster al primo avvio) importa le collation con "sh -c locale -a":
+  # shell e locale restano confinati in questo profilo (ix)
+  /usr/bin/dash ix,
+  /usr/bin/locale ix,
+  /usr/lib/locale/** r,
+  /usr/lib/postgresql/17/lib/** mr,
+  /usr/share/postgresql/17/** r,
+  /usr/share/zoneinfo/** r,
+  /etc/postgresql/** r,
+  /etc/postgresql-common/** r,
+  /var/lib/postgresql/ r,
+  /var/lib/postgresql/** rwk,
+  /var/log/postgresql/* w,
+  /run/postgresql/ r,
+  /run/postgresql/** rwk,
+  /dev/shm/PostgreSQL.* rw,
+  # Memoria condivisa anonima (mmap MAP_SHARED|MAP_ANONYMOUS): con attach_disconnected
+  # compare come "/". Vale solo per l'oggetto "/" in sé, non per i file sotto la radice.
+  owner / rw,
+  owner @{PROC}/@{pid}/oom_score_adj rw,
+  @{PROC}/sys/kernel/random/boot_id r,
+  /sys/kernel/mm/transparent_hugepage/* r,
+
+  include if exists <local/usr.lib.postgresql.17.bin.postgres>
+}

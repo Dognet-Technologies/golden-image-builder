@@ -1,0 +1,18 @@
+# Esempio di container rootless gestito da systemd con quadlet (articolo 7).
+# Gira come utente "podman"; root nel container = un UID non privilegiato sull'host.
+[Unit]
+Description=Container di esempio (rootless, sola lettura, senza capability)
+
+[Container]
+Image=docker.io/library/alpine:3.22
+Exec=sleep infinity
+ReadOnly=true
+NoNewPrivileges=true
+DropCapability=ALL
+Network=none
+
+[Service]
+Restart=on-failure
+
+[Install]
+WantedBy=default.target

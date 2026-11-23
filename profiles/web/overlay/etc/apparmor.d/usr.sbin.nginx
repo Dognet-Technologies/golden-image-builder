@@ -1,0 +1,40 @@
+# Profilo AppArmor di nginx (articolo 6): solo ciò che serve a servire file statici
+# e fare da reverse proxy. In enforce: ogni accesso non previsto viene negato e loggato.
+abi <abi/4.0>,
+include <tunables/global>
+
+profile nginx /usr/sbin/nginx {
+  include <abstractions/base>
+  include <abstractions/nameservice>
+  include <abstractions/openssl>
+
+  capability net_bind_service,
+  capability setuid,
+  capability setgid,
+  capability chown,
+  capability dac_override,
+  capability kill,
+
+  network inet stream,
+  network inet6 stream,
+  network unix stream,
+
+  /usr/sbin/nginx mr,
+  /etc/nginx/** r,
+  /etc/ssl/openssl.cnf r,
+  /usr/share/nginx/** r,
+  /var/www/** r,
+  /var/log/nginx/ r,
+  /var/log/nginx/* w,
+  /var/lib/nginx/ r,
+  /var/lib/nginx/** rw,
+  /run/nginx.pid rw,
+  /run/nginx-golden/ r,
+  /run/nginx-golden/* r,
+  /run/credentials/nginx.service/ r,
+  /run/credentials/nginx.service/* r,
+  @{PROC}/sys/kernel/random/boot_id r,
+  owner @{PROC}/@{pid}/cpuset r,
+
+  include if exists <local/usr.sbin.nginx>
+}

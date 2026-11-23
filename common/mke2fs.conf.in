@@ -1,0 +1,14 @@
+# Configurazione di mke2fs per il disco: esplicita, indipendente dall'host.
+# hash_seed fisso: altrimenti è casuale e il filesystem cambia a ogni build.
+[defaults]
+	base_features = sparse_super,large_file,filetype,resize_inode,dir_index,ext_attr
+	default_mntopts = acl,user_xattr
+	blocksize = 4096
+	inode_size = 256
+	inode_ratio = 16384
+
+[fs_types]
+	ext4 = {
+		features = has_journal,extent,huge_file,flex_bg,metadata_csum,metadata_csum_seed,64bit,dir_nlink,extra_isize,orphan_file
+		options = hash_seed=@HASH_SEED@
+	}

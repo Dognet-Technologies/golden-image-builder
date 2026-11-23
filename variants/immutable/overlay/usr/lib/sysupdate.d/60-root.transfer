@@ -1,0 +1,15 @@
+# Root erofs (articolo 5)
+[Transfer]
+ProtectVersion=%A
+
+[Source]
+Type=url-file
+Path=@UPDATE_URL@/@IMAGE_ID@
+MatchPattern=@IMAGE_ID@_@v.root.raw
+
+[Target]
+Type=partition
+Path=auto
+MatchPattern=@IMAGE_ID@_@v
+MatchPartitionType=root
+ReadOnly=1

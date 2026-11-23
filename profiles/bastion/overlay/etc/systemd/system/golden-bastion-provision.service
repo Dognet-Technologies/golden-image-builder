@@ -1,0 +1,14 @@
+[Unit]
+Description=Bastion: peer WireGuard e indirizzi di amministrazione dalle credential (articolo 7)
+After=nftables.service
+Before=systemd-networkd.service ssh.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ImportCredential=golden.wg.peers
+ImportCredential=golden.bastion.admin
+ExecStart=/usr/libexec/golden/bastion-provision
+
+[Install]
+WantedBy=multi-user.target

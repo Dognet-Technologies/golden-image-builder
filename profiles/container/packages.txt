@@ -1,0 +1,4 @@
+podman            # container rootless (articolo 7)
+uidmap            # newuidmap/newgidmap: mappatura degli UID per l'utente non privilegiato
+passt             # rete dei container rootless (pasta), senza privilegi
+dbus-user-session # bus D-Bus per l'utente: podman usa il cgroup manager di systemd

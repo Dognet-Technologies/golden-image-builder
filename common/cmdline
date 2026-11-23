@@ -1,0 +1,20 @@
+# Console
+console=tty0 console=ttyS0,115200
+# Primo avvio senza domande interattive (articolo 2)
+systemd.firstboot=off
+# initrd: niente shell di emergenza, in caso di errore riavvio (articolo 3).
+# rd.timeout: senza, un dispositivo root che non compare blocca l'avvio per sempre
+# (e il conteggio dei tentativi dell'articolo 5 non scatta mai)
+rd.shell=0 rd.emergency=reboot rd.timeout=90 panic=10
+# Memoria: azzeramento alla liberazione, niente fusione delle cache slab, pagine mescolate
+init_on_free=1 slab_nomerge page_alloc.shuffle=1
+# Superficie d'attacco: niente syscall a 32 bit, niente debugfs
+ia32_emulation=0 debugfs=off
+# Integrità del kernel anche senza Secure Boot
+lockdown=integrity module.sig_enforce=1
+# IOMMU in modalità stretta (protezione dal DMA dei dispositivi)
+intel_iommu=on iommu.strict=1 iommu.passthrough=0
+# Audit dal primo processo, non solo da quando parte auditd (articolo 4)
+audit=1 audit_backlog_limit=8192
+# Niente socket SSH automatici (AF_UNIX, vsock) creati da systemd-ssh-generator (articolo 4)
+systemd.ssh_auto=0

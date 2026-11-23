@@ -1,0 +1,3 @@
+// Ogni giorno: aggiorna gli indici e installa gli aggiornamenti (articolo 5)
+APT::Periodic::Update-Package-Lists "1";
+APT::Periodic::Unattended-Upgrade "1";

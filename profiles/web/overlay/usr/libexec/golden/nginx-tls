@@ -1,0 +1,33 @@
+#!/bin/sh
+# Abilita HTTPS solo se il certificato arriva come credential di systemd
+# (golden.tls.crt e golden.tls.key): nell'immagine non c'è nessuna chiave TLS.
+set -eu
+OUT=/run/nginx-golden/tls.conf
+CRED="${CREDENTIALS_DIRECTORY:-}"
+rm -f "${OUT}"
+if [ -n "${CRED}" ] && [ -s "${CRED}/golden.tls.crt" ] && [ -s "${CRED}/golden.tls.key" ]; then
+  sed "s|@CRED@|${CRED}|g" > "${OUT}" <<'CONF'
+server {
+	listen 443 ssl default_server;
+	listen [::]:443 ssl default_server;
+	http2 on;
+	ssl_certificate @CRED@/golden.tls.crt;
+	ssl_certificate_key @CRED@/golden.tls.key;
+	add_header Strict-Transport-Security "max-age=63072000" always;
+	add_header X-Content-Type-Options "nosniff" always;
+	add_header X-Frame-Options "DENY" always;
+	add_header Referrer-Policy "no-referrer" always;
+	root /var/www/html;
+	index index.html;
+	location / {
+		try_files $uri $uri/ =404;
+	}
+	location ~ /\. {
+		deny all;
+	}
+}
+CONF
+  echo "nginx-tls: HTTPS abilitato"
+else
+  echo "nginx-tls: nessun certificato (golden.tls.*), solo HTTP"
+fi

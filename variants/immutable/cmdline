@@ -1,0 +1,5 @@
+# machine-id stabile dal firmware (UUID SMBIOS): /etc è in sola lettura (articolo 5)
+systemd.machine_id=firmware
+# Un blocco della root che non corrisponde all'albero di hash provoca un riavvio
+# (non un errore di I/O): insieme al conteggio dei tentativi porta al rollback
+systemd.verity_root_options=restart-on-corruption

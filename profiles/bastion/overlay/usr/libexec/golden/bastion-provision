@@ -1,0 +1,16 @@
+#!/bin/sh
+# Bastion: peer WireGuard e indirizzi di amministrazione dalle credential.
+#  golden.wg.peers      sezioni [WireGuardPeer] per 50-wg0.netdev
+#  golden.bastion.admin indirizzi/reti (uno per riga) da cui SSH è ammesso fuori dal tunnel
+set -eu
+CRED="${CREDENTIALS_DIRECTORY:-}"
+if [ -n "${CRED}" ] && [ -s "${CRED}/golden.wg.peers" ]; then
+  install -d -m 0755 /run/systemd/network/50-wg0.netdev.d
+  install -m 0640 -g systemd-network "${CRED}/golden.wg.peers" /run/systemd/network/50-wg0.netdev.d/50-peers.conf
+  echo "bastion-provision: peer WireGuard caricati"
+fi
+if [ -n "${CRED}" ] && [ -s "${CRED}/golden.bastion.admin" ]; then
+  ELEMS="$(grep -vE '^\s*(#|$)' "${CRED}/golden.bastion.admin" | paste -sd, -)"
+  [ -n "${ELEMS}" ] && nft add element inet filter admin4 "{ ${ELEMS} }"
+  echo "bastion-provision: amministrazione ammessa da ${ELEMS}"
+fi

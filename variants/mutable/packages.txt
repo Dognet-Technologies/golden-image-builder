@@ -1,0 +1,1 @@
+unattended-upgrades  # aggiornamenti di sicurezza automatici dello userland (articolo 5)

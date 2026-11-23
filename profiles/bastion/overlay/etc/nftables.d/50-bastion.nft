@@ -1,0 +1,6 @@
+# Bastion: aperto solo WireGuard; SSH dal tunnel o dagli indirizzi di amministrazione
+add element inet filter udp_in { 51820 }
+delete element inet filter tcp_in { 22 }
+add set inet filter admin4 { type ipv4_addr; flags interval; }
+add rule inet filter profile_in iifname "wg0" tcp dport 22 accept
+add rule inet filter profile_in ip saddr @admin4 tcp dport 22 accept

@@ -1,0 +1,8 @@
+# Slot A: verity della root installata
+[Partition]
+Type=root-verity
+Label=@LABEL@_verity
+CopyBlocks=/work/split/img.verity.raw
+SizeMinBytes=128M
+SizeMaxBytes=128M
+ReadOnly=yes

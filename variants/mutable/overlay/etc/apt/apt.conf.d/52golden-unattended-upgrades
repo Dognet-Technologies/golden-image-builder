@@ -1,0 +1,13 @@
+// Solo l'archivio di sicurezza e gli aggiornamenti di trixie, niente kernel e bootloader:
+// arrivano dentro la UKI firmata, cioè con una nuova immagine
+Unattended-Upgrade::Origins-Pattern {
+        "origin=Debian,codename=${distro_codename}-security,label=Debian-Security";
+        "origin=Debian,codename=${distro_codename}-updates";
+};
+Unattended-Upgrade::Package-Blacklist {
+        "linux-";
+        "systemd-boot";
+        "dracut";
+};
+// Mai riavviare da solo: il riavvio si pianifica
+Unattended-Upgrade::Automatic-Reboot "false";

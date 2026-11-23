@@ -1,0 +1,1 @@
+postgresql-17     # database (articolo 6)

@@ -1,0 +1,2 @@
+## Regole immutabili fino al riavvio: chi diventa root non può spegnere l'audit
+-e 2

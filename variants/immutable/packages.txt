@@ -1,0 +1,4 @@
+systemd-container  # systemd-sysupdate e systemd-pull: aggiornamenti A/B (articolo 5)
+gpg                # verifica della firma dei manifest SHA256SUMS degli aggiornamenti
+systemd-cryptsetup # systemd-veritysetup: root protetta da dm-verity
+systemd-boot       # systemd-bless-boot: conteggio dei tentativi di avvio (boot assessment)

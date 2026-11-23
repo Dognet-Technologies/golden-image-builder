@@ -1,0 +1,3 @@
+network.wireguard.private.50-wg0=out/vm/wg-server.key
+golden.wg.peers=out/vm/wg-peers.conf
+golden.bastion.admin=out/vm/bastion-admin

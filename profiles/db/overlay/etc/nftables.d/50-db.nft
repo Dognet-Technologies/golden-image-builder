@@ -1,0 +1,6 @@
+# Profilo db: PostgreSQL (5432) solo dagli indirizzi nei set, vuoti per default.
+# In produzione: add element inet filter db_clients4 { 10.0.10.0/24 }
+add set inet filter db_clients4 { type ipv4_addr; flags interval; }
+add set inet filter db_clients6 { type ipv6_addr; flags interval; }
+add rule inet filter profile_in ip saddr @db_clients4 tcp dport 5432 accept
+add rule inet filter profile_in ip6 saddr @db_clients6 tcp dport 5432 accept

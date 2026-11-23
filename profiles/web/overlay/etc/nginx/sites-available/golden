@@ -1,0 +1,14 @@
+# Sito di default del profilo web (articolo 6)
+server {
+	listen 80 default_server;
+	listen [::]:80 default_server;
+	root /var/www/html;
+	index index.html;
+	location / {
+		try_files $uri $uri/ =404;
+	}
+	# File nascosti (.git, .env, ...) mai serviti
+	location ~ /\. {
+		deny all;
+	}
+}

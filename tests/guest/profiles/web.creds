@@ -1,0 +1,2 @@
+golden.tls.crt=out/vm/tls.crt
+golden.tls.key=out/vm/tls.key

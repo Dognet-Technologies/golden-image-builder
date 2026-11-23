@@ -1,0 +1,9 @@
+# Interfaccia WireGuard del bastion (articolo 7). Nessuna chiave in questo file:
+# systemd-networkd legge la privata dalla credential network.wireguard.private.50-wg0
+# e i peer arrivano da golden.wg.peers (vedi golden-wg-peers.service).
+[NetDev]
+Name=wg0
+Kind=wireguard
+
+[WireGuard]
+ListenPort=51820

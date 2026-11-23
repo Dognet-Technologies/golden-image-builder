@@ -1,0 +1,13 @@
+# Strumenti di build: versioni fissate dallo stesso snapshot dell'immagine
+systemd-repart    # partizioni e filesystem del disco
+systemd-ukify     # Unified Kernel Image
+sbsigntool        # firma Secure Boot (sbsign, sbverify)
+efitools          # liste di firme EFI per l'enrollment delle chiavi
+openssl           # generazione delle chiavi
+dosfstools        # mkfs.vfat per la ESP
+mtools            # copia dei file nella ESP senza mount
+e2fsprogs         # mkfs.ext4
+erofs-utils       # mkfs.erofs per la root in sola lettura (articolo 5)
+libcryptsetup12   # dm-verity calcolato da systemd-repart (articolo 5)
+fdisk             # sfdisk per i controlli
+gnupg             # firma dei manifest di aggiornamento (articolo 5)

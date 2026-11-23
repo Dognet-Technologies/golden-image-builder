@@ -1,0 +1,2 @@
+# Profilo web: HTTP e HTTPS
+add element inet filter tcp_in { 80, 443 }

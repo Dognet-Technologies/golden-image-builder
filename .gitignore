@@ -1,0 +1,5 @@
+# Prodotti della build: archivi, dischi, SBOM, rapporti, cache, VM di test
+/out/
+
+# Cache di Python generata dagli strumenti in lib/
+__pycache__/

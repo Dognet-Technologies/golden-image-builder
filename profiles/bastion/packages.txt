@@ -1,0 +1,1 @@
+# nessun pacchetto in più: WireGuard è nel kernel e systemd-networkd lo configura

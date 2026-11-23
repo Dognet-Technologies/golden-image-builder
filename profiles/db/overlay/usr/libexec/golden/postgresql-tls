@@ -1,0 +1,18 @@
+#!/bin/sh
+# TLS di PostgreSQL solo se il certificato arriva come credential (golden.tls.*).
+# Le credential appartengono a root: le copiamo per l'utente postgres in /run.
+set -eu
+DIR=/run/postgresql/golden-tls
+CONF=/run/postgresql/golden-tls.conf
+CRED="${CREDENTIALS_DIRECTORY:-}"
+rm -rf "${DIR}" "${CONF}"
+if [ -n "${CRED}" ] && [ -s "${CRED}/golden.tls.crt" ] && [ -s "${CRED}/golden.tls.key" ]; then
+  install -d -o postgres -g postgres -m 0700 "${DIR}"
+  install -o postgres -g postgres -m 0600 "${CRED}/golden.tls.crt" "${CRED}/golden.tls.key" "${DIR}/"
+  printf "ssl = on\nssl_cert_file = '%s/golden.tls.crt'\nssl_key_file = '%s/golden.tls.key'\nssl_min_protocol_version = 'TLSv1.2'\n" "${DIR}" "${DIR}" > "${CONF}"
+  # Il server gira come postgres e deve poterlo leggere (UMask=0077 lo crea per root)
+  chown postgres:postgres "${CONF}"
+  echo "postgresql-tls: TLS abilitato"
+else
+  echo "postgresql-tls: nessun certificato (golden.tls.*), connessioni di rete impossibili (pg_hba vuole hostssl)"
+fi

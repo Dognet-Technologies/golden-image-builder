@@ -1,0 +1,33 @@
+## Regole di audit (articolo 4). Solo arch=b64: le syscall a 32 bit sono
+## disattivate dal kernel (ia32_emulation=0, articolo 3).
+
+## Identità e autenticazione
+-w /etc/passwd -p wa -k identity
+-w /etc/group -p wa -k identity
+-w /etc/shadow -p wa -k identity
+-w /etc/gshadow -p wa -k identity
+-w /etc/pam.d/ -p wa -k pam
+-w /etc/security/ -p wa -k pam
+
+## Accesso remoto
+-w /etc/ssh/sshd_config -p wa -k sshd
+-w /etc/ssh/sshd_config.d/ -p wa -k sshd
+-w /root/.ssh/ -p wa -k ssh_keys
+
+## Configurazione di sicurezza
+-w /etc/nftables.conf -p wa -k firewall
+-w /etc/nftables.d/ -p wa -k firewall
+-w /etc/sysctl.d/ -p wa -k sysctl
+-w /etc/modprobe.d/ -p wa -k modprobe
+-w /etc/apparmor.d/ -p wa -k apparmor
+-w /etc/audit/ -p wa -k audit_config
+-w /etc/systemd/ -p wa -k systemd
+
+## Kernel: moduli, kexec, ora di sistema, montaggi
+-a always,exit -F arch=b64 -S init_module,finit_module,delete_module -k modules
+-a always,exit -F arch=b64 -S kexec_load,kexec_file_load -k kexec
+-a always,exit -F arch=b64 -S adjtimex,settimeofday,clock_settime -k time
+-a always,exit -F arch=b64 -S mount,umount2 -F auid!=unset -k mount
+
+## Comandi eseguiti nelle sessioni di login (auid impostato da pam_loginuid)
+-a always,exit -F arch=b64 -S execve,execveat -F auid!=unset -k exec

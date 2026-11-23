@@ -1,0 +1,9 @@
+# Slot A: root della versione installata
+[Partition]
+Type=root
+Label=@LABEL@
+CopyBlocks=/work/split/img.root.raw
+SizeMinBytes=2G
+SizeMaxBytes=2G
+ReadOnly=yes
+GrowFileSystem=no
